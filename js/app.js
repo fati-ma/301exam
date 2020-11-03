@@ -5,10 +5,12 @@ var animeTable = document.getElementById('animeTable');
 
 var tHeader = ['Anime Title', 'Category', 'Random Season', 'Remove'];
 
+//Array of objects
 AnimeList.all = [];
 
+//Constructor
 function AnimeList(aTitle, aCategory) {
-    this.title = aTitle;
+    this.title = aTitle; 
     this.category = aCategory;
     this.season = 0;
 
@@ -16,14 +18,17 @@ function AnimeList(aTitle, aCategory) {
 
 }
 
+//Prototype to generate the season number
 AnimeList.prototype.getSeason = function (min, max) {
     this.season = getRandomNumber(min, max);
 }
 
+//Function to generate random number
 function getRandomNumber(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
+//Event Listner to handle the ADD button in the form
 animeForm.addEventListener('submit', handleSubmit);
 
 function handleSubmit(event) {
@@ -40,6 +45,7 @@ function handleSubmit(event) {
     renderAnimeList();
 }
 
+//Create table header
 function tableHeader() {
     var h3E = document.createElement('h3');
     h3E.textContent = 'My To-Watch Anime List';
@@ -55,27 +61,34 @@ function tableHeader() {
 
 }
 
+//Render Anime List on the webpage
 function renderAnimeList() {
 
+    //To empty the table 
     animeTable.innerHTML = '';
 
     tableHeader();
 
+    //Create tds in the table so each one of them contain an information from the list
     for (var i = 0; i < AnimeList.all.length; i++) {
         var trE2 = document.createElement('tr');
 
+        //title of anime
         var tdE1 = document.createElement('td');
         trE2.appendChild(tdE1);
         tdE1.textContent = AnimeList.all[i].title;
 
+        //category of anime
         var tdE2 = document.createElement('td');
         trE2.appendChild(tdE2);
         tdE2.textContent = AnimeList.all[i].category;
 
+        //season of anime
         var tdE3 = document.createElement('td');
         trE2.appendChild(tdE3);
         tdE3.textContent = AnimeList.all[i].season;
 
+        //a remove button to delete an anime
         var removeBtn = document.createElement('button');
         removeBtn.setAttribute('id', AnimeList.all[i].title);
         removeBtn.textContent = 'X'
@@ -107,10 +120,12 @@ function removeList(event) {
 
 }
 
+//send the array of objects to the local storage
 function sendListToLS() {
     localStorage.setItem('animeList', JSON.stringify(AnimeList.all));
 }
 
+// get the array of objects from the local storahe and render it on the web page
 function getListFromLS() {
     AnimeList.all = JSON.parse(localStorage.getItem('animeList')) || [];
     renderAnimeList();
